@@ -402,6 +402,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8938509968561904059, guid: f9b10edcc73ec0a44beafc4a6d81070b, type: 3}
   m_PrefabInstance: {fileID: 241446809}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &289703512
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 289703514}
+  - component: {fileID: 289703513}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &289703513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 289703512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66f5a73f6b2ba14418a593dabba7555d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &289703514
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 289703512}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.8682752, y: 1.2529922, z: -0.04452257}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &355486081
 GameObject:
   m_ObjectHideFlags: 0
@@ -446,7 +490,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79fc0bbf4f071684b9e1311a4c3d5c8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bakriPrefab: {fileID: 1416643014294754533, guid: f9b10edcc73ec0a44beafc4a6d81070b, type: 3}
+  _preyPrefab: {fileID: 1416643014294754533, guid: f9b10edcc73ec0a44beafc4a6d81070b, type: 3}
   _markerList: {fileID: 1438308792}
 --- !u!1001 &358014151
 PrefabInstance:
@@ -4342,6 +4386,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6865630080031285038, guid: f646018eabe47084b9660258a8448c06, type: 3}
+      propertyPath: markerGraph.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6865630080031285038, guid: f646018eabe47084b9660258a8448c06, type: 3}
       propertyPath: 'markerGraph.Array.data[0]'
       value: 
       objectReference: {fileID: 4012959313817378141}
@@ -4349,6 +4397,10 @@ PrefabInstance:
       propertyPath: 'markerGraph.Array.data[1]'
       value: 
       objectReference: {fileID: 4012959313167734287}
+    - target: {fileID: 6865630080031285038, guid: f646018eabe47084b9660258a8448c06, type: 3}
+      propertyPath: 'markerGraph.Array.data[2]'
+      value: 
+      objectReference: {fileID: 4012959311720342754}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4559,6 +4611,10 @@ PrefabInstance:
     - target: {fileID: 2726537257953453349, guid: f646018eabe47084b9660258a8448c06, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6865630080031285038, guid: f646018eabe47084b9660258a8448c06, type: 3}
+      propertyPath: markerGraph.Array.size
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6865630080031285038, guid: f646018eabe47084b9660258a8448c06, type: 3}
       propertyPath: 'markerGraph.Array.data[0]'
@@ -4942,6 +4998,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6865630080031285038, guid: f646018eabe47084b9660258a8448c06, type: 3}
+      propertyPath: markerGraph.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6865630080031285038, guid: f646018eabe47084b9660258a8448c06, type: 3}
       propertyPath: 'markerGraph.Array.data[0]'
       value: 
       objectReference: {fileID: 4012959313704446973}
@@ -4949,6 +5009,10 @@ PrefabInstance:
       propertyPath: 'markerGraph.Array.data[1]'
       value: 
       objectReference: {fileID: 4012959313518514785}
+    - target: {fileID: 6865630080031285038, guid: f646018eabe47084b9660258a8448c06, type: 3}
+      propertyPath: 'markerGraph.Array.data[2]'
+      value: 
+      objectReference: {fileID: 4012959312455135164}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5396,6 +5460,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6865630080031285038, guid: f646018eabe47084b9660258a8448c06, type: 3}
+      propertyPath: markerGraph.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6865630080031285038, guid: f646018eabe47084b9660258a8448c06, type: 3}
       propertyPath: 'markerGraph.Array.data[0]'
       value: 
       objectReference: {fileID: 4012959313092608620}
@@ -5603,3 +5671,4 @@ SceneRoots:
   - {fileID: 355486082}
   - {fileID: 223985485}
   - {fileID: 845834367}
+  - {fileID: 289703514}
