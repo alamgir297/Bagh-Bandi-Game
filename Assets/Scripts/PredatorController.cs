@@ -11,7 +11,9 @@ public class PredatorController : MonoBehaviour {
 
     void Update() {
         if (inputHandler.IsSelectedAPiece()) {
-            inputHandler.MoveAPiece();
+            //inputHandler.PreyCaptureMove();
+            inputHandler.NormalMove();
         }
     }
+
 }

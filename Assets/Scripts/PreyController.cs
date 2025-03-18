@@ -1,14 +1,14 @@
 using UnityEngine;
 
 public class PreyController : MonoBehaviour {
+    private Marker _marker;
 
-    [SerializeField] private GameObject _bakriPrefab;
+    [SerializeField] private GameObject _preyPrefab;
     [SerializeField] private GameObject _markerList;
-    SpriteRenderer renderer;
+    private SpriteRenderer _renderer;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
-        renderer = _bakriPrefab.GetComponent<SpriteRenderer>();
-        PlaceBakriOnBoard();
+        PlacePreyOnBoard();
     }
 
     // Update is called once per frame
@@ -16,19 +16,25 @@ public class PreyController : MonoBehaviour {
 
     }
 
-    private void PlaceBakriOnBoard() {
+    private void PlacePreyOnBoard() {
         int count = 0;
-        foreach(Transform child in _markerList.transform) {
+        foreach (Transform child in _markerList.transform) {
+            _marker = child.GetComponent<Marker>();
             if (count < 16) {
                 Vector3 worldPosition = child.position;
-                GameObject bakri = Instantiate(_bakriPrefab, worldPosition, child.transform.rotation);
-                bakri.transform.SetParent(transform, true);
-                bakri.name = "bakri " + count;
+                GameObject prey = Instantiate(_preyPrefab, worldPosition, child.transform.rotation);
+                if (_marker.gameObject.TryGetComponent(out _renderer)) {
+                    _renderer.color = Color.cyan;
+                }
+                _marker.HasAPrey(true, prey);
+                prey.transform.SetParent(transform, true);
+                prey.name = "prey (" + count + ")";
+                //_marker.SetPreyRef(prey);
                 count++;
             }
+            if (_marker.gameObject.TryGetComponent(out _renderer)) {
+                _renderer.color = Color.cyan;
+            }
         }
-    }
-    void SetColor(Color color) {
-        renderer.color = color;
     }
 }
