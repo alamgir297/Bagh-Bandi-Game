@@ -4,10 +4,8 @@ using System.Collections;
 
 public class Marker : MonoBehaviour {
 
-    public bool _hasAPrey;
-    public GameObject _preyRef;
-    public bool _hasPredator;
-    public GameObject _predatorRef;
+    public bool _hasPiece;
+    public GameObject _pieceRef;
     private InputHandler _inputHandler;
     private PredatorController _predator;
     private SpriteRenderer _renderer;
@@ -22,34 +20,22 @@ public class Marker : MonoBehaviour {
         return markerGraph.Contains(target);
     }
 
-    public bool HasAPrey() => _hasAPrey;
-    public void HasAPrey(bool hasAPrey, GameObject preyRef) {
-        _hasAPrey = hasAPrey;
-        _preyRef = preyRef;
+    public bool HasAPiece() => _hasPiece;
+    public void HasAPiece(bool hasPiece, GameObject pieceRef) {
+        _hasPiece = hasPiece;
+        _pieceRef = pieceRef;
     }
-    public GameObject GetPreyRef() {
-        if (HasAPrey()) {
-            return _preyRef;
+    public GameObject GetPieceRef() {
+        if (HasAPiece()) {
+            return _pieceRef;
         }
         return null;
     }
 
-    //public bool HasAPredator() => _hasPredator;
-    //public void HasAPredator(bool hasPredator, GameObject predatorRef) {
-    //    _hasPredator = hasPredator;
-    //    _predatorRef = predatorRef;
-    //}
-    //public GameObject GetPredatorRef() {
-    //    if (HasAPrey()) {
-    //        return _preyRef;
-    //    }
-    //    return null;
-    //}
-
     public List<Marker> GetCaptureList() {
         List<Marker> temp = new();
         foreach (Marker target in markerGraph) {
-            if (IsConnected(target) && target.HasAPrey()) {
+            if (IsConnected(target) && target.HasAPiece()) {
                 temp.Add(target);
             }
         }
@@ -59,7 +45,7 @@ public class Marker : MonoBehaviour {
     public List<Marker> GetValidList() {
         List<Marker> temp = new();
         foreach(Marker target in markerGraph) {
-            if (IsConnected(target) && !target.HasAPrey()) {
+            if (IsConnected(target) && !target.HasAPiece()) {
                 temp.Add(target);
             }
         }

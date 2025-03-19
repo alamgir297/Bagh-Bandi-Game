@@ -4,24 +4,26 @@ using System.Collections.Generic;
 
 public class InputHandler : MonoBehaviour {
     private bool _isSelected;
-    private bool _isCaptureMovePossible;
+    private bool _isCaptureMove;
     private GameObject _selectedPiece;
     private GameObject _selectedMarker;
     private GameObject _previousSelected;
-    private GameObject _targerMarker;
+    private GameObject _targetMarker;
     private SpriteRenderer _spriteRenderer;
-    private Marker _selectedMarkerConnection;
-    private Marker _targetMarkerConnection;
-    private List<Marker> _validMoves= new();
+    private Marker _selectedMarkerNode;
+    private Marker _targetMarkerNode;
+    private List<Marker> _validMoves = new();
     private Dictionary<Marker, Marker> _captureMoves = new Dictionary<Marker, Marker>();
     Camera _mainCamera;
+
     [SerializeField] LayerMask markerLayer;
     [SerializeField] LayerMask gamePieceLayer;
+    [SerializeField] PredatorController _playerController;
 
     Color defaultColor = Color.cyan;
-    Color defaultColorPrey = Color.blue;
+    Color defaultColorPrey = Color.white;
     Color selectedColor = Color.green;
-    Color defaultColorPredator = Color.red;
+    Color defaultColorPredator = Color.white;
 
     private void Awake() {
         _isSelected = false;
@@ -31,18 +33,36 @@ public class InputHandler : MonoBehaviour {
     public void OnClick(InputAction.CallbackContext context) {
         if (!context.started) return;
 
-        Vector2 mousePosition = Mouse.current.position.ReadValue();
-        Vector2 worldPosition = _mainCamera.ScreenToWorldPoint(mousePosition);
+        Vector2 worldPosition = GetMouseWorldPosition();
         RaycastHit2D rayHit = CastRayInLayer(worldPosition, gamePieceLayer);
-
+        if (_previousSelected != null) ChangeDefaultColor(_previousSelected);
         if (rayHit.collider != null) {
             RaycastHit2D hit = CastRayInLayer(worldPosition, markerLayer);
             if (hit.collider != null) {
+                _selectedPiece = rayHit.collider.gameObject;
+                if (CurrentPlayerTurn() == PlayerTurn.Predator) {
+                    if (!_selectedPiece.CompareTag("Predator")) {
+                        ResetPiece(_previousSelected);
+                        return;
+                    }
+                }
+                if (CurrentPlayerTurn() == PlayerTurn.Prey) {
+                    if (!_selectedPiece.CompareTag("Prey")) {
+                        ResetPiece(_previousSelected);
+                        return;
+                    }
+                }
                 _selectedMarker = hit.collider.gameObject;
-                _selectedMarkerConnection = _selectedMarker.GetComponent<Marker>();
+                _selectedMarkerNode = _selectedMarker.GetComponent<Marker>();
                 SelectAPiece(rayHit.collider.gameObject);
                 GenerateValidMoves();
-                PreyCaptureMove();
+                if(CurrentPlayerTurn()== PlayerTurn.Predator) {
+                    GetCaptureMove();
+                    if (_validMoves.Count == 0) {
+                        GameManager.Instance.IsWinnerPlayer(PlayerTurn.Prey);
+                        GameManager.Instance.IsGameOver(true);
+                    }
+                }
                 ToggleValidMoveIndicator(true);
             }
             return;
@@ -51,7 +71,7 @@ public class InputHandler : MonoBehaviour {
             rayHit = CastRayInLayer(worldPosition, markerLayer);
             if (rayHit.collider != null) {
                 if (_isSelected) {
-                    _targerMarker = rayHit.collider.gameObject;
+                    _targetMarker = rayHit.collider.gameObject;
                     return;
                 }
 
@@ -63,42 +83,20 @@ public class InputHandler : MonoBehaviour {
             }
         }
     }
-    //public void OnClickNew(InputAction.CallbackContext context) {
-    //    if (!context.started) return;
-
-    //    Vector2 mousePosition = Mouse.current.position.ReadValue();
-    //    Vector2 worldPosition = _mainCamera.ScreenToWorldPoint(mousePosition);
-    //    RaycastHit2D rayHit = CastRayInLayer(worldPosition, markerLayer);
-
-    //    if (rayHit.collider != null) {
-    //            _selectedPiece= 
-    //            _selectedMarker = rayHit.collider.gameObject;
-    //            _selectedMarkerConnection = _selectedMarker.GetComponent<Marker>();
-    //            SelectAPiece(rayHit.collider.gameObject);
-    //            GenerateValidMoves();
-    //            PreyCaptureMove();
-    //            ToggleValidMoveIndicator(true);
-    //        return;
-    //    }
-    //    else {
-    //        rayHit = CastRayInLayer(worldPosition, markerLayer);
-    //        if (rayHit.collider != null) {
-    //            if (_isSelected) {
-    //                _targerMarker = rayHit.collider.gameObject;
-    //                return;
-    //            }
-
-    //            Debug.Log("select a valid cell");
-    //        }
-    //        else {
-
-    //            Debug.Log("Not a valid click");
-    //        }
-    //    }
-    //}
+    private Vector2 GetMouseWorldPosition() {
+        Vector2 mousePosition = Mouse.current.position.ReadValue();
+        return _mainCamera.ScreenToWorldPoint(mousePosition);
+    }
     public bool IsSelectedAPiece() => _isSelected;
-    
-    
+
+    private void ResetPiece(GameObject gameObject) {
+        ChangeDefaultColor(gameObject);
+        ToggleValidMoveIndicator(false);
+        _isSelected = false;
+        _selectedPiece = null;
+        _targetMarker = null;
+    }
+
     private RaycastHit2D CastRayInLayer(Vector2 origin, LayerMask layer) {
         return Physics2D.Raycast(origin, Vector2.zero, 1f, layer);
     }
@@ -111,6 +109,7 @@ public class InputHandler : MonoBehaviour {
         if (_selectedPiece != null) {
             ChangeDefaultColor(_selectedPiece);
             _previousSelected = _selectedPiece;
+            ChangeDefaultColor(_previousSelected);
             ToggleValidMoveIndicator(false);
             if (_validMoves.Count == 0) {
                 Debug.Log("list is empty ");
@@ -118,62 +117,91 @@ public class InputHandler : MonoBehaviour {
         }
         _selectedPiece = gamePiece;
         _isSelected = true;
-        if (_selectedPiece.TryGetComponent(out _spriteRenderer)) {
-            ChangeColorOnSelected(selectedColor);
+        if (_selectedPiece != null) {
+            if (_selectedPiece.TryGetComponent(out _spriteRenderer)) {
+                ChangeColorOnSelected(selectedColor);
+            }
         }
     }
 
 
-    public void NormalMove() {
-        if (_selectedPiece != null && _targerMarker != null) {
-            _targetMarkerConnection = _targerMarker.GetComponent<Marker>();
-            if (_validMoves.Contains(_targetMarkerConnection)) {
-                MoveAPiece(_targerMarker);
-                if (_captureMoves.ContainsKey(_targetMarkerConnection)) {
-                    Marker pieceToBeRemovedMarker = _captureMoves[_targetMarkerConnection];
-                    GameObject pieceToBeRemoved = pieceToBeRemovedMarker.GetPreyRef();
-                    if (pieceToBeRemoved != null) {
-                        pieceToBeRemovedMarker.HasAPrey(false,null);
-                        Destroy(pieceToBeRemoved);
-                    }
-                    _targetMarkerConnection.HasAPrey(false, null);
-                    _captureMoves.Clear();
-                }
+    public void PreyMove() {
+        if (_selectedPiece != null && _targetMarker != null) {
+            _targetMarkerNode = _targetMarker.GetComponent<Marker>();
+            if (_validMoves.Contains(_targetMarkerNode)) {
+                MoveAPiece(_targetMarker);
+                GameManager.Instance.ChangePlayerTurn();
+                //Debug.Log("move by: " + PlayerTurn.Prey);
             }
             else {
                 Debug.Log("plz select a valid marker");
+                return;
             }
 
             // Reset color to default when the piece is moved or invalid move
-            ToggleValidMoveIndicator(false);
-            ChangeDefaultColor(_selectedPiece);
-            _isSelected = false;
-            _selectedPiece = null;
-            _targerMarker = null;
+            ResetPiece(_selectedMarker);
+        }
+    }
+    public void PredatorMove() {
+        if (_selectedPiece != null && _targetMarker != null) {
+            _targetMarkerNode = _targetMarker.GetComponent<Marker>();
+            if (_validMoves.Contains(_targetMarkerNode)) {
+                MoveAPiece(_targetMarker);
+                Debug.Log("move by: " + PlayerTurn.Predator);
+                if (_captureMoves.ContainsKey(_targetMarkerNode)) {
+                    IsCaptureMove(true);
+                    _playerController.CaptureMove();
+                    Marker pieceToBeRemovedMarker = _captureMoves[_targetMarkerNode];
+                    GameObject pieceToBeRemoved = pieceToBeRemovedMarker.GetPieceRef();
+                    if (pieceToBeRemoved != null) {
+                        pieceToBeRemovedMarker.HasAPiece(false, null);
+                        Destroy(pieceToBeRemoved);
+                    }
+                }
+                if (!IsCaptureMove())
+                    GameManager.Instance.ChangePlayerTurn();
+                _targetMarkerNode.HasAPiece(false, null);
+                _captureMoves.Clear();
+            }
+            else {
+                Debug.Log("plz select a valid marker");
+                return;
+            }
+
+            // Reset color to default when the piece is moved or invalid move
+            ResetPiece(_selectedMarker);
+            IsCaptureMove(false);
         }
     }
 
-    public void PreyCaptureMove() {
-        foreach (Marker target in _selectedMarkerConnection.GetCaptureList()) {
+    public void GetCaptureMove() {
+        foreach (Marker target in _selectedMarkerNode.GetCaptureList()) {
             Vector2 direction = CalculateDirection(_selectedMarker.transform.position, target.gameObject.transform.position);
             RaycastHit2D[] rayHit = CastRayInDirectionAll(target.gameObject.transform.position, direction, 2f, markerLayer);
             if (rayHit.Length > 1) {
                 Marker preyMarker = rayHit[0].collider.GetComponent<Marker>();
                 Marker landingMarker = rayHit[1].collider.GetComponent<Marker>();
 
-                if (landingMarker.gameObject != null && !landingMarker.HasAPrey()) {
+                if (landingMarker.gameObject != null && !landingMarker.HasAPiece()) {
                     AddToMoveList(landingMarker);
                     _captureMoves[landingMarker] = preyMarker;
-                    Debug.Log("Valid capture move found at: " + landingMarker.gameObject.name);
                 }
             }
         }
+    }
+    private bool IsCaptureMove() => _isCaptureMove;
+    private void IsCaptureMove(bool isCaptureMove) {
+        _isCaptureMove = isCaptureMove;
+    }
+
+    private PlayerTurn CurrentPlayerTurn() {
+        return GameManager.Instance.CurrentPlayerTurn();
     }
 
     private void GenerateValidMoves() {
         _validMoves.Clear();
         _captureMoves.Clear();
-        _validMoves = _selectedMarkerConnection.GetValidList();
+        _validMoves = _selectedMarkerNode.GetValidList();
         ToggleValidMoveIndicator(true);
     }
     private void AddToMoveList(Marker marker) {
@@ -184,7 +212,7 @@ public class InputHandler : MonoBehaviour {
     private void ToggleValidMoveIndicator(bool isOn) {
         foreach (Marker target in _validMoves) {
             if (target.gameObject.TryGetComponent(out _spriteRenderer)) {
-                if(isOn)
+                if (isOn)
                     _spriteRenderer.color = Color.red;
                 else _spriteRenderer.color = defaultColor;
             }
@@ -196,9 +224,9 @@ public class InputHandler : MonoBehaviour {
     }
 
     public void MoveAPiece(GameObject target) {
-        _selectedPiece.transform.position = target.transform.position;
-        _selectedMarkerConnection.HasAPrey(false,null);
-        _targetMarkerConnection.HasAPrey(true, _selectedPiece);
+        _selectedPiece.transform.position = target.transform.position+GameManager.Instance._globalOffset;
+        _selectedMarkerNode.HasAPiece(false, null);
+        _targetMarkerNode.HasAPiece(true, _selectedPiece);
         ChangeDefaultColor(_selectedPiece);
         Debug.Log("Move successful");
     }
@@ -212,11 +240,13 @@ public class InputHandler : MonoBehaviour {
         }
     }
     private void ChangeDefaultColor(GameObject gameObject) {
-        if(gameObject.TryGetComponent(out _spriteRenderer)) {
-        if (_selectedPiece.CompareTag("Prey")) {
-            ChangeColorOnSelected(defaultColorPrey);
-        }
-        else ChangeColorOnSelected(defaultColorPredator);
+        if (gameObject != null) {
+            if (gameObject.TryGetComponent(out _spriteRenderer)) {
+                if (gameObject.CompareTag("Prey")) {
+                    ChangeColorOnSelected(defaultColorPrey);
+                }
+                else ChangeColorOnSelected(defaultColorPredator);
+            }
         }
     }
 

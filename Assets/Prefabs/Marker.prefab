@@ -101,6 +101,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 909c53e29f8a8bd428f115a7d1323aa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _hasPiece: 0
+  _pieceRef: {fileID: 0}
   markerGraph:
   - {fileID: 0}
   - {fileID: 0}
@@ -138,5 +140,5 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.013711197, y: -0.021166816}
-  m_Radius: 0.38544583
+  m_Offset: {x: -0.0006313835, y: -0.021167668}
+  m_Radius: 0.5031636
