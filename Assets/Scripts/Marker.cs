@@ -7,13 +7,13 @@ public class Marker : MonoBehaviour {
     public bool _hasPiece;
     public GameObject _pieceRef;
     private InputHandler _inputHandler;
-    private PredatorController _predator;
+    private PlayerController _predator;
     private SpriteRenderer _renderer;
     [SerializeField] private List<Marker> markerGraph = new List<Marker>();
 
     private void Awake() {
         _inputHandler = GameObject.Find("InputHandler").GetComponent<InputHandler>();
-        _predator = GameObject.Find("Predator").GetComponent<PredatorController>();
+        _predator = GameObject.Find("Predator").GetComponent<PlayerController>();
     }
 
     public bool IsConnected(Marker target) {

@@ -1,25 +1,62 @@
+using System;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
+    private int _preyCount = 16;
 
     private Marker _marker;
     private InputHandler inputHandler;
+    private SpriteRenderer _renderer;
+    private SelectedData _selectedData= new SelectedData(null, null);
+
+    public event Action<int> OnPreyCountChanged;
 
     [SerializeField] private GameObject _preyPrefab;
+    [SerializeField] private GameObject _predatorPrefab;
     [SerializeField] private GameObject _markerList;
-    [SerializeField] private GameObject _predatorInitialPositioMarker;
+    [SerializeField] private GameObject _predatorInitialPosition;
 
-    private SpriteRenderer _renderer;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
         PlacePreyOnBoard();
+        PlacePredatorOnBoard(_predatorInitialPosition);
+        inputHandler = GameObject.Find("InputHandler").GetComponent<InputHandler>();
+        inputHandler.OnSelected += GetSelectedData;
+
     }
 
-    // Update is called once per frame
     void Update() {
-
+        if (inputHandler.IsSelectedAPiece()) {
+            //_selectedData = inputHandler.GetSelectedData();
+            if (_selectedData.IsValidSelection()) {
+                if (GameManager.Instance.CurrentPlayerTurn() == PlayerTurn.Predator) {
+                    inputHandler.PredatorMove(_selectedData.Selected, _selectedData.Target);
+                }
+                else {
+                    inputHandler.PreyMove(_selectedData.Selected, _selectedData.Target);
+                }
+            }
+            _selectedData = new SelectedData(null, null);
+        }
     }
-
+    private void OnEnable() {
+        if (inputHandler != null) {
+            inputHandler.OnSelected += GetSelectedData;
+        }
+    }
+    private void OnDisable() {
+        if (inputHandler != null) {
+            inputHandler.OnSelected -= GetSelectedData;
+        }
+    }
+    private void OnDestroy() {
+        if (inputHandler != null) {
+            inputHandler.OnSelected -= GetSelectedData;
+        }
+    }
+    private void PlacePredatorOnBoard(GameObject initialPosition) {
+        _predatorPrefab.transform.position = initialPosition.transform.position;
+    }
     private void PlacePreyOnBoard() {
         int count = 0;
         foreach (Transform child in _markerList.transform) {
@@ -40,4 +77,20 @@ public class PlayerController : MonoBehaviour {
             }
         }
     }
+
+    private void GetSelectedData(SelectedData selectedData) {
+        _selectedData = selectedData;
+    }
+    public void CaptureMove() {
+        _preyCount--;
+        if (_preyCount < 1) {
+            if (GameManager.Instance != null) {
+                GameManager.Instance.IsWinnerPlayer(PlayerTurn.Predator);
+                GameManager.Instance.IsGameOver(true);
+            }
+        }
+        OnPreyCountChanged?.Invoke(_preyCount);
+    }
+
+
 }

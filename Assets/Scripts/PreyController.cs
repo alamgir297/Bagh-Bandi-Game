@@ -1,7 +1,6 @@
 using UnityEngine;
 
 public class PreyController : MonoBehaviour {
-    private int _preyCount = 16;
     private Marker _marker;
     [SerializeField] private GameObject _preyPrefab;
     [SerializeField] private GameObject _markerList;

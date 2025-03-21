@@ -4,7 +4,8 @@ using TMPro;
 
 public class GameUiManager : MonoBehaviour {
 
-    [SerializeField] PredatorController _playerController;
+    //[SerializeField] PredatorController _playerController;
+    [SerializeField] PlayerController _playerController;
     [SerializeField] TextMeshProUGUI _turnMessagePrey;
     [SerializeField] TextMeshProUGUI _turnMessagePredator;
     [SerializeField] TextMeshProUGUI _preyCountText;

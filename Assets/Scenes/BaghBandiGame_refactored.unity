@@ -480,6 +480,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 149451520}
   m_CullTransparentMesh: 1
+--- !u!1 &149772509
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 149772511}
+  m_Layer: 0
+  m_Name: NetworkManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &149772511
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 149772509}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.061974, y: 1.3587495, z: -0.051478595}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &223985484
 GameObject:
   m_ObjectHideFlags: 0
@@ -489,7 +520,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 223985485}
-  - component: {fileID: 223985486}
   m_Layer: 7
   m_Name: Predator
   m_TagString: Predator
@@ -513,19 +543,6 @@ Transform:
   - {fileID: 1419777413}
   m_Father: {fileID: 296543636}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &223985486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 223985484}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd2c08c5f36f64a45af7c942267b0d63, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _predatorInitialPositioMarker: {fileID: 1330341764}
 --- !u!1001 &237246236
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -805,8 +822,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 296543636}
+  - component: {fileID: 296543637}
   m_Layer: 0
-  m_Name: GamePieces
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -825,56 +843,25 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 355486082}
   - {fileID: 223985485}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &355486081
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 355486082}
-  - component: {fileID: 355486083}
-  m_Layer: 7
-  m_Name: Prey
-  m_TagString: Prey
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &355486082
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 355486081}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -35.90505, y: -358.92328, z: 1.1050196}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 296543636}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &355486083
+--- !u!114 &296543637
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 355486081}
+  m_GameObject: {fileID: 296543635}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79fc0bbf4f071684b9e1311a4c3d5c8f, type: 3}
+  m_Script: {fileID: 11500000, guid: a62cbc13487cc564dbccbde6f2f3a8a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _preyPrefab: {fileID: 1416643014294754533, guid: f9b10edcc73ec0a44beafc4a6d81070b, type: 3}
+  _predatorPrefab: {fileID: 223985484}
   _markerList: {fileID: 1438308792}
+  _predatorInitialPosition: {fileID: 1330341764}
 --- !u!1001 &358014151
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1716,7 +1703,7 @@ MonoBehaviour:
   gamePieceLayer:
     serializedVersion: 2
     m_Bits: 128
-  _playerController: {fileID: 223985486}
+  _playerController: {fileID: 296543637}
 --- !u!1001 &932292159
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2101,7 +2088,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b4f7e9b1dd47cf418bdb7052a459c96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerController: {fileID: 223985486}
+  _playerController: {fileID: 296543637}
   _turnMessagePrey: {fileID: 149451522}
   _turnMessagePredator: {fileID: 660313069}
   _preyCountText: {fileID: 26832261}
@@ -6936,3 +6923,4 @@ SceneRoots:
   - {fileID: 1289538334}
   - {fileID: 1191303828}
   - {fileID: 296543636}
+  - {fileID: 149772511}

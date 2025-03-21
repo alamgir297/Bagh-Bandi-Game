@@ -17,14 +17,16 @@ public class PredatorController : MonoBehaviour {
     void Update() {
         if (inputHandler.IsSelectedAPiece()) {
             if (GameManager.Instance.CurrentPlayerTurn() == PlayerTurn.Predator) {
-                inputHandler.PredatorMove();
+                //inputHandler.PredatorMove();
             }
             else {
-                inputHandler.PreyMove();
+                //inputHandler.PreyMove();
             }
 
         }
     }
+
+
     public void CaptureMove() {
         _preyCount--;
         if (_preyCount < 1) {
