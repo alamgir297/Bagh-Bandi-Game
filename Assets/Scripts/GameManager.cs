@@ -26,7 +26,6 @@ public class GameManager : MonoBehaviour {
     public void ChangePlayerTurn() {
         if (!IsGameOver()) {
             _currentPlayer = (_currentPlayer == PlayerTurn.Predator) ? PlayerTurn.Prey : PlayerTurn.Predator;
-            Debug.Log("turn changed: " + _currentPlayer);
             OnTurnChanged?.Invoke(_currentPlayer);
         }
     }
