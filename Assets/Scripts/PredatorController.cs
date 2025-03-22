@@ -32,7 +32,7 @@ public class PredatorController : MonoBehaviour {
         if (_preyCount < 1) {
             if (GameManager.Instance != null) {
                 GameManager.Instance.IsWinnerPlayer(PlayerTurn.Predator);
-                GameManager.Instance.IsGameOver(true);
+                //GameManager.Instance.IsGameOver(true);
             }
         }
         OnPreyCountChanged?.Invoke(_preyCount);
