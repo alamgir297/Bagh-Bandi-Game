@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
     private bool _isGameOver = false;
@@ -8,7 +9,7 @@ public class GameManager : MonoBehaviour {
     public event Action<PlayerTurn> OnTurnChanged= delegate { };
     public event Action<bool> OnGameOver;
 
-    PlayerTurn _currentPlayer = PlayerTurn.Predator;
+    PlayerTurn _currentPlayer;
     private PlayerTurn _winner;
 
     private void Awake() {
@@ -20,8 +21,15 @@ public class GameManager : MonoBehaviour {
         DontDestroyOnLoad(gameObject);
     }
 
+    public void StartGame() {
+        SceneManager.LoadScene(0);
+    }
+
     public PlayerTurn CurrentPlayerTurn() {
         return _currentPlayer;
+    }
+    public void CurrentPlayerTurn(PlayerTurn player) {
+        _currentPlayer = player;
     }
     public void ChangePlayerTurn() {
         if (!IsGameOver()) {
@@ -33,8 +41,10 @@ public class GameManager : MonoBehaviour {
 
     public void IsGameOver(bool isGameOver) {
         _isGameOver = isGameOver;
-        //_winner = winner;
-        OnGameOver?.Invoke(_isGameOver);
+    }
+    public void GameOver() {
+            _isGameOver = true;
+            OnGameOver?.Invoke(_isGameOver);
     }
     public PlayerTurn IsWinnerPlayer() => _winner;
     public void IsWinnerPlayer(PlayerTurn playerTurn) {

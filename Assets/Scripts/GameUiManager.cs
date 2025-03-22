@@ -11,6 +11,8 @@ public class GameUiManager : MonoBehaviour {
     [SerializeField] TextMeshProUGUI _preyCountText;
     [SerializeField] TextMeshProUGUI _captureCountText;
     [SerializeField] TextMeshProUGUI _winnierMessage;
+    [SerializeField] Button _restartButton;
+    [SerializeField] GameObject _gameOverPanel;
     void Start() {
         GameManager.Instance.OnTurnChanged += ShowPlayerTurnMessage;
         _playerController.OnPreyCountChanged += UpdatePreyCountUI;
@@ -43,6 +45,12 @@ public class GameUiManager : MonoBehaviour {
             GameManager.Instance.OnGameOver -= ShowGameOverUI;
         }
     }
+
+    public void StartGame() {
+        if (GameManager.Instance != null) {
+            GameManager.Instance.StartGame();
+        }
+    }
     private void ShowPlayerTurnMessage(PlayerTurn playerTurn) {
         _turnMessagePredator.gameObject.SetActive(playerTurn == PlayerTurn.Predator);
         _turnMessagePrey.gameObject.SetActive(playerTurn == PlayerTurn.Prey);
@@ -54,8 +62,9 @@ public class GameUiManager : MonoBehaviour {
     }
 
     private void ShowGameOverUI(bool isOver) {
+        _gameOverPanel.SetActive(true);
         _winnierMessage.gameObject.SetActive(isOver);
-        _winnierMessage.text = GetWinnerPlayer()+" won!";
+        _winnierMessage.text ="Game Over\n"+ GetWinnerPlayer()+" won!";
     }
     private PlayerTurn GetCurrentPlayer() {
         return GameManager.Instance.CurrentPlayerTurn();
