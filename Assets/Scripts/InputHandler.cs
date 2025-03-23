@@ -45,6 +45,7 @@ public class InputHandler : MonoBehaviour {
         Vector2 worldPosition = GetMouseWorldPosition();
         RaycastHit2D rayHit = CastRayInLayer(worldPosition, gamePieceLayer);
         if (_previousSelected != null) {
+            _gameLogic.CaptureMovePerformed(false);
             _gameLogic.ToggleValidMoveIndicator(false);
             ChangeDefaultColor(_previousSelected);
         }
