@@ -13,6 +13,7 @@ public class GameUiManager : MonoBehaviour {
     [SerializeField] TextMeshProUGUI _winnierMessage;
     [SerializeField] Button _restartButton;
     [SerializeField] GameObject _gameOverPanel;
+    [SerializeField] GameObject _settingsPanel;
     void Start() {
         GameManager.Instance.OnTurnChanged += ShowPlayerTurnMessage;
         _playerController.OnPreyCountChanged += UpdatePreyCountUI;
@@ -65,6 +66,10 @@ public class GameUiManager : MonoBehaviour {
         _gameOverPanel.SetActive(true);
         _winnierMessage.gameObject.SetActive(isOver);
         _winnierMessage.text ="Game Over\n"+ GetWinnerPlayer()+" won!";
+    }
+
+    public void ToggleSettingsPanel() {
+        _settingsPanel.SetActive(!_settingsPanel.activeSelf);
     }
     private PlayerTurn GetCurrentPlayer() {
         return GameManager.Instance.CurrentPlayerTurn();

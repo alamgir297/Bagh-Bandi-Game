@@ -86,8 +86,9 @@ public class GameLogic : MonoBehaviour {
                     _captureMovesValidate.Clear();
                 }
                 else CaptureMovePerformed(false);
-                if (!IsCaptureMove())
+                if (!IsCaptureMove()) {
                     GameManager.Instance.ChangePlayerTurn();
+                }
                 _captureMoves.Clear();
             }
             else {
@@ -117,7 +118,7 @@ public class GameLogic : MonoBehaviour {
         _isCaptureMove = isCaptureMove;
     }
     public bool CaptureMovePerformed() => _captureMovePerformed;
-    private void CaptureMovePerformed(bool isPerformed) {
+    public void CaptureMovePerformed(bool isPerformed) {
         _captureMovePerformed = isPerformed;
     }
     private Vector2 CalculateDirection(Vector2 source, Vector2 target) {
