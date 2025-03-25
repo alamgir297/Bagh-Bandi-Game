@@ -1,7 +1,7 @@
 # Bagh-Bandi (Multiplayer Game Prototype)
 
 ## 📌 Overview
-Bagh-Bandi is a strategic two-player game inspired by the traditional board game, where one player controls the **Predator (Lion)** and the other controls the **Prey (Goats)**. This project serves as a prototype for implementing **turn-based multiplayer mechanics** using **Unity and Netcode for GameObjects**.
+Bagh-Bandi is a strategic two-player game inspired by the traditional board game, where one player controls the **Predator (Tiger)** and the other controls the **Prey (Goats)**. This project serves as a prototype for implementing **turn-based multiplayer mechanics** using **Unity and Netcode for GameObjects**.
 
 ## 🎮 Gameplay
 - The **Predator** aims to capture the **Prey** by jumping over them.
@@ -31,22 +31,14 @@ Bagh-Bandi is a strategic two-player game inspired by the traditional board game
  ┃ ┣ 📂 Scripts
  ┃ ┃ ┣ 🎮 GameManager.cs  // Handles game state & turns
  ┃ ┃ ┣ 🎮 InputHandler.cs  // Manages player input, New Input system
- ┃ ┃ ┣ 🎮 PredatorController.cs  // Handles predator movement & actions
- ┃ ┃ ┣ 🎮 PreyController.cs  // Handles prey movement & actions
+ ┃ ┃ ┣ 🎮 GameLogic.cs  // Handles game logic
+ ┃ ┃ ┣ 🎮 PlayerController.cs  // Handles player movement & actions
  ┃ ┃ ┣ 🎮 GameUiManager.cs  // Manages UI elements & events
+ ┃ ┃ ┣ 🎮 Marker.cs  // Manages the board layout and nodes
  ┃ ┣ 📂 Sprites
  ┃ ┣ 📂 Prefabs
  ┣ 📜 README.md
 ```
-
-## 🛠️ Installation & Setup
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/alamgir297/Bagh-Bandi-Game.git
-   ```
-2. Open the project in **Unity 6(6000.38f1 or later recommended)**.
-3. Ensure all required dependencies are installed.
-4. Press **Play** in the Unity Editor to test the prototype.
 
 ## 🎯 Roadmap
 - [x] Implement core mechanics & turn-based system
@@ -57,10 +49,6 @@ Bagh-Bandi is a strategic two-player game inspired by the traditional board game
 
 ## 🤝 Contributing
 Feel free to fork this repo and contribute! Open an issue if you have suggestions or encounter bugs.
-
-## 📜 License
-This project is open-source and available under the **MIT License**.
-
 ---
 🚀 *A strategic game that challenges your tactical skills!*
 
